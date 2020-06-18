@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  rest:
+    container_name: go
+    image: golang:1.14.4-alpine
+    volumes:
+      - .:/go/src/restful-api-go
+    working_dir: /go/src/restful-api-go/services/rest
+    command: go run main.go
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    container_name: postgres
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.dev
+
+volumes:
+  postgres_data:
